@@ -2,23 +2,27 @@ import estudiante.*
 import materia.*
 import carrera.*
 import materiaAprobada.*
-describe "name" {
-    const prog1 = new Materia(nombre = "Programación", cupoMaximo = 2)
-    const mat1  = new Materia(nombre = "Matemática", cupoMaximo = 1)
+//    Descubri que veo el rojo y el amarillo igual, por lo que borre una banda de cosas de los test
+// porque lo que yo veia todo rojo en realidad wollok solo me estaba diciendo que las materias, carreras
+// y alumnos que estaba creando no lo estaba probando en ningun test.
+// :´(  :´(   :´(
 
+describe "name" {
+    const elementosDeProgramacion = new Materia(nombre = "Programación", cupoMaximo = 2)
+    const matematicas1  = new Materia(nombre = "Matemática", cupoMaximo = 1)
 
     const juan = new Estudiante(nombre = "Juan")
     test "Juan Aprobo" {
-        const programacion = new Carrera(nombre = "Programacion", materias = #{prog1, mat1})
-        juan.aprobar(prog1, 8)
+        const programacion = new Carrera(nombre = "Programacion", materias = #{elementosDeProgramacion, matematicas1})
+        juan.aprobar(elementosDeProgramacion, 8)
 
         assert.equals(1, juan.cantMateriasAprobadas())
         assert.equals(8, juan.promedioNota())  
     }
 
     test "Promedi Juan" {
-        juan.aprobar(prog1, 10)
-        juan.aprobar(mat1, 6)
+        juan.aprobar(elementosDeProgramacion, 10)
+        juan.aprobar(matematicas1, 6)
 
         assert.equals(2, juan.cantMateriasAprobadas())
         assert.equals(8, juan.promedioNota())
@@ -33,45 +37,45 @@ describe "name" {
 
     test "luis se inscribe en programacion" {
         const luis = new Estudiante(nombre = "Luis")
-        const programacion = new Carrera(nombre = "Programacion", materias = #{prog1, mat1})
+        const programacion = new Carrera(nombre = "Programacion", materias = #{elementosDeProgramacion, matematicas1})
         luis.carrerasEnCurso().add(programacion)
-        luis.inscribirseEn(prog1)
+        luis.inscribirseEn(elementosDeProgramacion)
 
-        assert.that(luis.estaInscripto(prog1))
-        assert.that(prog1.inscriptos().contains(luis))
+        assert.that(luis.estaInscripto(elementosDeProgramacion))
+        assert.that(elementosDeProgramacion.inscriptos().contains(luis))
     }
 
     test "lista de espera cuando no hay cupo" {
-        const programacion = new Carrera(nombre = "Programacion", materias = #{prog1, mat1})
+        const programacion = new Carrera(nombre = "Programacion", materias = #{elementosDeProgramacion, matematicas1})
         const alumnoA = new Estudiante(nombre = "A")
         const alumnoB = new Estudiante(nombre = "B")
 
         alumnoA.carrerasEnCurso().add(programacion)
         alumnoB.carrerasEnCurso().add(programacion)
-        alumnoA.inscribirseEn(mat1)
-        alumnoB.inscribirseEn(mat1)
+        alumnoA.inscribirseEn(matematicas1)
+        alumnoB.inscribirseEn(matematicas1)
 
-        assert.that(mat1.listaEspera().contains(alumnoB))
+        assert.that(matematicas1.listaEspera().contains(alumnoB))
     }
 
     test "dar de baja y promover" {
         const alumnoA      = new Estudiante(nombre = "A")
         const alumnoB      = new Estudiante(nombre = "B")
-        const programacion = new Carrera(nombre = "Programacion", materias = #{prog1, mat1})
+        const programacion = new Carrera(nombre = "Programacion", materias = #{elementosDeProgramacion, matematicas1})
         
         alumnoA.carrerasEnCurso().add(programacion)
         alumnoB.carrerasEnCurso().add(programacion)
-        alumnoA.inscribirseEn(mat1)
-        alumnoB.inscribirseEn(mat1)
+        alumnoA.inscribirseEn(matematicas1)
+        alumnoB.inscribirseEn(matematicas1)
 
-        mat1.darDeBaja(alumnoA)
+        matematicas1.darDeBaja(alumnoA)
 
-        assert.that(mat1.inscriptos().contains(alumnoB))
+        assert.that(matematicas1.inscriptos().contains(alumnoB))
     }
 
     test "puede inscribirse en materia" {
-        const programacion = new Carrera(nombre = "Programacion", materias = #{prog1, mat1})
+        const programacion = new Carrera(nombre = "Programacion", materias = #{elementosDeProgramacion, matematicas1})
         juan.carrerasEnCurso().add(programacion)
-        assert.that(juan.puedeInscribirseEn(prog1))
+        assert.that(juan.puedeInscribirseEn(elementosDeProgramacion))
     }
 }
